@@ -24,6 +24,6 @@ clean:
 	rm -rf newroot root/bin
 	rm -f ramfs.zst small.iso
 
-dist-clean:
-	cd busybox && make clean
-	cd linux && make clean
+distclean:
+	cd busybox && make distclean
+	cd linux && make distclean
