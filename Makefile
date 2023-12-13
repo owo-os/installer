@@ -21,13 +21,17 @@ root/bin/busybox: busybox/busybox busyconfig
 	ln -f busybox/busybox root/bin
 	cd root/bin && ./busybox --list | grep -v busybox | xargs -n1 ln -sf busybox
 
-busybox/busybox: busyconfig busybox
+busybox/.config: busyconfig
 	ln -sf ../busyconfig busybox/.config
+
+busybox/busybox: busybox busybox/.config
 	cd busybox && make -j"$(shell nproc)"
 
-linux/vmlinux: linconfig linux
+linux/.config: linconfig
 	cd linux && make tinyconfig
 	cd linux && patch -p1 <../linconfig
+
+linux/vmlinux: linux linux/.config
 	cd linux && make -j"$(shell nproc)"
 
 busybox:
