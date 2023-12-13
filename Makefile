@@ -1,18 +1,34 @@
 
-ramfs.zst: busybox linux iso.sh busyconfig linconfig
-	./iso.sh
+small.iso: newroot newroot/boot/vmlinuz
+	mkisofs -o small.iso -b isolinux.bin -no-pad -no-emul-boot -boot-load-size 4 -boot-info-table newroot
+
+ramfs.zst: root/bin/busybox
+	find root -printf "%P\0" | cpio --create --null --format newc -D root | zstd > ramfs.zst
+
+newroot/boot/vmlinuz: linux/vmlinux
+	cd linux && make install INSTALL_PATH=../newroot/boot
+	rm -f newroot/boot/System.* newroot/boot/vmlinuz.old
 
 newroot: ramfs.zst isolinux.cfg
 	mkdir -p newroot/boot
-	cd linux && make install INSTALL_PATH=../newroot/boot
-	rm -f newroot/boot/System.* newroot/boot/vmlinuz.old
 	ln -f ramfs.zst newroot/boot
 	ln -f isolinux.cfg newroot
 	cp /usr/lib/syslinux/bios/isolinux.bin newroot
 	cp /usr/lib/syslinux/bios/ldlinux.c32 newroot
 
-small.iso: newroot
-	mkisofs -o small.iso -b isolinux.bin -no-pad -no-emul-boot -boot-load-size 4 -boot-info-table newroot
+root/bin/busybox: busybox/busybox busyconfig
+	mkdir -p root/bin root/proc root/dev
+	ln -f busybox/busybox root/bin
+	cd root/bin && ./busybox --list | grep -v busybox | xargs -n1 ln -sf busybox
+
+busybox/busybox: busyconfig busybox
+	ln -sf ../busyconfig busybox/.config
+	cd busybox && make -j"$(shell nproc)"
+
+linux/vmlinux: linconfig linux
+	cd linux && make tinyconfig
+	cd linux && patch -p1 <../linconfig
+	cd linux && make -j"$(shell nproc)"
 
 busybox:
 	git clone -b 1_36_stable --depth 1 https://git.busybox.net/busybox/ busybox
