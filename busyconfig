@@ -1,7 +1,7 @@
 #
 # Automatically generated make config: don't edit
 # Busybox version: 1.36.1
-# Tue Dec 12 20:42:34 2023
+# Tue Dec 12 23:02:06 2023
 #
 CONFIG_HAVE_DOT_CONFIG=y
 
@@ -1045,17 +1045,17 @@ CONFIG_FEATURE_MIME_CHARSET=""
 #
 # CONFIG_FEATURE_FAST_TOP is not set
 # CONFIG_FEATURE_SHOW_THREADS is not set
-# CONFIG_FREE is not set
+CONFIG_FREE=y
 # CONFIG_FUSER is not set
 # CONFIG_IOSTAT is not set
-# CONFIG_KILL is not set
-# CONFIG_KILLALL is not set
+CONFIG_KILL=y
+CONFIG_KILLALL=y
 # CONFIG_KILLALL5 is not set
 # CONFIG_LSOF is not set
 # CONFIG_MPSTAT is not set
 # CONFIG_NMETER is not set
 # CONFIG_PGREP is not set
-# CONFIG_PKILL is not set
+CONFIG_PKILL=y
 # CONFIG_PIDOF is not set
 # CONFIG_FEATURE_PIDOF_SINGLE is not set
 # CONFIG_FEATURE_PIDOF_OMIT is not set
@@ -1080,7 +1080,7 @@ CONFIG_FEATURE_MIME_CHARSET=""
 # CONFIG_FEATURE_TOP_DECIMALS is not set
 # CONFIG_FEATURE_TOP_SMP_PROCESS is not set
 # CONFIG_FEATURE_TOPMEM is not set
-# CONFIG_UPTIME is not set
+CONFIG_UPTIME=y
 # CONFIG_FEATURE_UPTIME_UTMP_SUPPORT is not set
 # CONFIG_WATCH is not set
 

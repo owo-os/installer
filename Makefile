@@ -1,8 +1,8 @@
 
-ramfs.zst: busybox linux iso.sh
+ramfs.zst: busybox linux iso.sh busyconfig linconfig
 	./iso.sh
 
-newroot: ramfs.zst
+newroot: ramfs.zst isolinux.cfg
 	mkdir -p newroot/boot
 	cd linux && make install INSTALL_PATH=../newroot/boot
 	ln -f ramfs.zst newroot/boot
@@ -11,7 +11,7 @@ newroot: ramfs.zst
 	cp /usr/lib/syslinux/bios/isolinux.bin newroot
 	cp /usr/lib/syslinux/bios/ldlinux.c32 newroot
 
-small.iso: newroot isolinux.cfg
+small.iso: newroot
 	mkisofs -o small.iso -b isolinux.bin -no-pad -no-emul-boot -boot-load-size 4 -boot-info-table newroot
 
 busybox:
