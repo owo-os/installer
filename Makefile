@@ -1,3 +1,4 @@
+BUSYOPTIONS ?= CPPFLAGS=-m32 LDFLAGS=-m32
 
 small.iso: newroot newroot/boot/vmlinuz
 	mkisofs -o small.iso -b isolinux.bin -no-pad -no-emul-boot -boot-load-size 4 -boot-info-table newroot
@@ -25,7 +26,7 @@ busybox/.config: busyconfig
 	ln -sf ../busyconfig busybox/.config
 
 busybox/busybox: busybox busybox/.config
-	cd busybox && make -j"$(shell nproc)"
+	cd busybox && ${BUSYOPTIONS} make -j"$(shell nproc)"
 
 linux/.config: linconfig
 	cd linux && make tinyconfig
