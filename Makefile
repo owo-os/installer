@@ -1,4 +1,7 @@
-BUSYOPTIONS ?= CPPFLAGS=-m32 LDFLAGS=-m32
+WIDTH ?= 32
+BUSYOPTIONS ?= CPPFLAGS=-m$(WIDTH) LDFLAGS=-m$(WIDTH)
+
+linconfigs := $(wildcard arch/*/configs/*)
 
 small.iso: newroot newroot/boot/vmlinuz
 	mkisofs -o small.iso -b isolinux.bin -no-pad -no-emul-boot -boot-load-size 4 -boot-info-table newroot
@@ -28,9 +31,10 @@ busybox/.config: busyconfig
 busybox/busybox: busybox busybox/.config
 	cd busybox && ${BUSYOPTIONS} make -j"$(shell nproc)"
 
-linux/.config: linconfig
+linux/.config: $(linconfigs)
+	cp -r arch linux
 	cd linux && make tinyconfig
-	cd linux && patch -p1 <../linconfig
+	cd linux && make owo$(WIDTH).config
 
 linux/vmlinux: linux linux/.config
 	cd linux && make -j"$(shell nproc)"
@@ -43,7 +47,7 @@ linux:
 
 clean:
 	rm -rf newroot root/bin
-	rm -f ramfs.zst small.iso
+	rm -f ramfs.zst small.iso linux/.config linux/vmlinux busybox/.config
 
 distclean:
 	cd busybox && make distclean
