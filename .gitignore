@@ -1,7 +1,7 @@
 *.iso
 *.zst
-linux/
-busybox/
-root/bin/
-newroot/
+/linux/
+/busybox/
+/root/bin/
+/newroot/
 
