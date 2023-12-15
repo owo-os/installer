@@ -31,7 +31,7 @@ busybox/.config: $(busyconfigs)
 	ln -sf ../conf/busybox/$(CONF) busybox/.config
 
 busybox/busybox: busybox busybox/.config
-	cd busybox && $(BUSYOPTIONS) make -j"$(shell nproc)"
+	cd busybox && $(BUSYOPTIONS) make -j"$(shell nproc)" $(BUSYFLAGS)
 
 linux/.config: $(linconfigs)
 	cp -r conf/* linux/arch
