@@ -3,24 +3,16 @@
 # script for udhcpc
 # Copyright (c) 2008 Natanael Copa <natanael.copa@gmail.com>
 
-UDHCPC="/etc/udhcpc"
+UDHCPC="/etc/udhcpc.d"
 UDHCPC_CONF="$UDHCPC/udhcpc.conf"
 
 RESOLV_CONF="/etc/resolv.conf"
 [ -f $UDHCPC_CONF ] && . $UDHCPC_CONF
 
-export broadcast
-export dns
-export domain
-export interface
-export ip
-export mask
-export metric
-export staticroutes
-export router
-export subnet
+export broadcast dns domain interface ip mask
+export metric staticroutes router subnet
 
-export PATH=/usr/bin:/bin:/usr/sbin:/sbin
+export PATH=/bin
 
 run_scripts() {
 	local dir=$1
@@ -169,7 +161,7 @@ case "$1" in
 		echo "udhcpc received DHCP NAK" >&2
 		;;
 	*)
-		echo "Error: this script should be called from udhcpc" >&2
+		echo "Error: not called from udhcpc" >&2
 		exit 1
 		;;
 esac
