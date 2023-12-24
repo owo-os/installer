@@ -15,6 +15,6 @@ mknod -m 620 /dev/tty0 c 4 0
 mknod -m 620 /dev/ttyS0 c 4 64
 mknod -m 666 /dev/fb0 c 29 0
 
-[ -x /bin/oworc ] && oworc &
+[ -x /bin/oworc ] && oworc
 
 /bin/sh
